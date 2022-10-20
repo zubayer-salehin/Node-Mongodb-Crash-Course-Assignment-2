@@ -35,6 +35,12 @@ app.all('*', (req, res) => {
 })
 
 
+/* Server Listen on PORT */
+app.listen(port, () => {
+    console.log(`App is running on port ${port}`);
+});
+
+
 /* Global Error Handler*/
 app.use(errorHandler);
 
@@ -45,9 +51,3 @@ process.on("unhandledRejection", (error) => {
         process.exit(1);
     })
 })
-
-
-// server
-app.listen(port, () => {
-    console.log(`App is running on port ${port}`);
-});
