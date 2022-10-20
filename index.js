@@ -5,7 +5,7 @@ const tourRouter = require("./Routes/Tour.Route");
 const errorHandler = require("./Middleware/errorHandler");
 const DBConnect = require("./Utils/dbConnect");
 require('dotenv').config();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5000;
 
 
 /* Application Middleware */
