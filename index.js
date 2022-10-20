@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(cors())
 
 
-// database connection
+/* Database Connection */
 DBConnect()
 
 
