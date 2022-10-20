@@ -3,8 +3,8 @@ const app = express();
 const cors = require("cors");
 const tourRouter = require("./Routes/Tour.Route");
 const errorHandler = require("./Middleware/errorHandler");
+const DBConnect = require("./Utils/dbConnect");
 require('dotenv').config();
-const DBConnect = require('./utils/dbConnect');
 const port = process.env.PORT || 8080;
 
 
@@ -14,7 +14,7 @@ app.use(cors())
 
 
 // database connection
-DBConnect();
+DBConnect()
 
 
 /* Home Route */
