@@ -32,12 +32,4 @@ app.all('*', (req, res) => {
 app.use(errorHandler);
 
 
-process.on("unhandledRejection", (error) => {
-    console.log(error.name, error.message);
-    app.close(() => {
-        process.exit(1);
-    })
-})
-
-
 module.exports = app;
