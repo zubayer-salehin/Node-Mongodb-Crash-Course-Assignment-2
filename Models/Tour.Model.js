@@ -24,9 +24,9 @@ const tourSchema = mongoose.Schema({
         trim: true,
         min: [0, "Price Can't be Negative"],
     },
-    capital: {
+    country: {
         type: String,
-        required: [true, "Please Provide a Tour capital"],
+        required: [true, "Please Provide a Tour country"],
         trim: true
     },
     image: {

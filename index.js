@@ -1,53 +1,14 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
-const tourRouter = require("./Routes/Tour.Route");
-const errorHandler = require("./Middleware/errorHandler");
-const DBConnect = require("./Utils/dbConnect");
 require('dotenv').config();
-const port = process.env.PORT || 5000;
-
-
-/* Application Middleware */
-app.use(express.json())
-app.use(cors())
+const port = process.env.PORT || 8000;
+const app = require('./app');
+const dbConnect = require("./Utils/dbConnect");
 
 
 /* Database Connection */
-DBConnect()
-
-
-/* Home Route */
-app.get('/', (req, res) => {
-    res.send("Tour Management Website");
-})
-
-
-
-/* All Tour Route */
-app.use("/tours", tourRouter);
-
-
-
-/* Undefined Route */
-app.all('*', (req, res) => {
-    res.send('No Route Found')
-})
+dbConnect();
 
 
 /* Server Listen on PORT */
 app.listen(port, () => {
     console.log(`App is running on port ${port}`);
 });
-
-
-/* Global Error Handler*/
-app.use(errorHandler);
-
-
-process.on("unhandledRejection", (error) => {
-    console.log(error.name, error.message);
-    app.close(() => {
-        process.exit(1);
-    })
-})

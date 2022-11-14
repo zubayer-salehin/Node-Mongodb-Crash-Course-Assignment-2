@@ -6,10 +6,12 @@ const router = express.Router();
 
 
 // Tour Routes
-router.get("/trending", tourController.getTrendingTourDetails)
+router.route("/trending")
+    .get(tourController.getTrendingTourDetails)
 
 
-router.get("/cheapest", tourController.getCheapestTourDetails)
+router.route("/cheapest")
+    .get(tourController.getCheapestTourDetails)
 
 
 router.route("/")

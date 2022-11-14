@@ -1,4 +1,4 @@
-const Tour = require("../Models/Tour.Model")
+const { allTourService, createTourService, singleTourService, tourUpdateService, trendingTourDetails, cheapestTourDetails } = require("../Services/Tour.Services");
 
 exports.getAllTour = async (req, res) => {
 
@@ -18,28 +18,15 @@ exports.getAllTour = async (req, res) => {
     }
 
     if (req.query.page) {
-        const page = req.query.page - 1;
-        queries.page = page;
-    }
-
-    if (req.query.page == 0) {
-        const page = 0;
-        queries.page = page;
-    }
-
-    if (req.query.limit) {
-        const limit = req.query.limit;
-        queries.limit = limit;
+        const { page = 1, limit = 3 } = req.query;
+        const skip = (page - 1) * Number(limit);
+        queries.skip = skip;
+        queries.limit = Number(limit);
     }
 
 
     try {
-        const tours = await Tour.find({})
-            .sort(queries.sortBy)
-            .select(queries.fields)
-            .skip(Number(queries.page) * Number(queries.limit))
-            .limit(Number(queries.limit))
-
+        const tours = await allTourService(queries);
 
         res.status(200).json({
             status: "success",
@@ -61,8 +48,7 @@ exports.saveTour = async (req, res) => {
     try {
         const tourinfo = req.body;
         tourinfo["veiw"] = 0;
-        const tourData = new Tour(tourinfo);
-        const tour = await tourData.save();
+        const tour = await createTourService(tourinfo);
 
         res.status(200).json({
             status: "success",
@@ -80,34 +66,11 @@ exports.saveTour = async (req, res) => {
 }
 
 
-exports.tourUpdate = async (req, res) => {
-
-    try {
-        const id = req.params.id;
-        const tour = await Tour.updateOne({ _id: id }, { $set: req.body }, { runValidators: true })
-
-        res.status(200).json({
-            status: "success",
-            message: "Tour is update",
-            data: tour
-        })
-    } catch (error) {
-        res.status(400).json({
-            status: "fail",
-            message: "Tour is not update",
-            error: error.message
-        })
-    }
-
-}
-
-
 exports.getSinlgeTourDetails = async (req, res) => {
 
     try {
         const id = req.params.id;
-        const tour = await Tour.findById(id)
-            .select("-veiw")
+        const tour = await singleTourService(id);
 
         res.status(200).json({
             status: "success",
@@ -124,13 +87,39 @@ exports.getSinlgeTourDetails = async (req, res) => {
 }
 
 
+exports.tourUpdate = async (req, res) => {
+
+    try {
+        const id = req.params.id;
+        const tour = await tourUpdateService(id, req.body);
+
+        if (!tour.modifiedCount) {
+            res.status(400).json({
+                status: "fail",
+                message: "Tour is not updated",
+            })
+        }
+
+        res.status(200).json({
+            status: "success",
+            message: "Tour is updated",
+            data: tour
+        })
+    } catch (error) {
+        res.status(400).json({
+            status: "fail",
+            message: "Tour is not updated",
+            error: error.message
+        })
+    }
+
+}
+
+
 exports.getTrendingTourDetails = async (req, res) => {
 
     try {
-        const tour = await Tour.find({})
-            .select("-veiw")
-            .sort({ "veiw": -1 })
-            .limit(3)
+        const tour = await trendingTourDetails();
 
         res.status(200).json({
             status: "success",
@@ -151,10 +140,7 @@ exports.getTrendingTourDetails = async (req, res) => {
 exports.getCheapestTourDetails = async (req, res) => {
 
     try {
-        const tour = await Tour.find({})
-            .select("-veiw")
-            .sort("price")
-            .limit(3)
+        const tour = await cheapestTourDetails();
 
         res.status(200).json({
             status: "success",
