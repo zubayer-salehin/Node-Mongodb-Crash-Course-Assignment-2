@@ -6,12 +6,11 @@ const router = express.Router();
 
 
 // Tour Routes
-router.route("/tour/trending")
-    .get(tourController.getTrendingTourDetails)
+
+router.get("/tour/trending", tourController.getTrendingTourDetails)
 
 
-router.route("/tour/cheapes")
-    .get(tourController.getCheapestTourDetails)
+router.get("/tour/cheapes", tourController.getCheapestTourDetails)
 
 
 router.route("/tours")
@@ -19,12 +18,11 @@ router.route("/tours")
     .post(tourController.saveTour)
 
 
-router.route("tours/:id")
-    .get(veiwCount, tourController.getSinlgeTourDetails)
+router.get("/tours/:id", veiwCount, tourController.getSinlgeTourDetails)
 
 
-router.route("tour/:id")
-    .patch(tourController.tourUpdate)
+router.patch("tour/:id", tourController.tourUpdate)
+
 
 
 module.exports = router;
