@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(cors())
 
 
-/* Home Route */
+/** Home Route **/
 app.get('/', (req, res) => {
     res.send("Tour Management Website");
 })
