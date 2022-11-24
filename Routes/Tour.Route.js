@@ -6,21 +6,24 @@ const router = express.Router();
 
 
 // Tour Routes
-router.route("/trending")
+router.route("/tour/trending")
     .get(tourController.getTrendingTourDetails)
 
 
-router.route("/cheapest")
+router.route("/tour/cheapes")
     .get(tourController.getCheapestTourDetails)
 
 
-router.route("/")
+router.route("/tours")
     .get(tourController.getAllTour)
     .post(tourController.saveTour)
 
 
-router.route("/:id")
+router.route("tours/:id")
     .get(veiwCount, tourController.getSinlgeTourDetails)
+
+
+router.route("tour/:id")
     .patch(tourController.tourUpdate)
 
 

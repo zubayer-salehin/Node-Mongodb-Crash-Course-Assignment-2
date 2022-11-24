@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 
 
 /****** All Tour Route ******/
-app.use("/tours", tourRouter);
+app.use(tourRouter);
 
 
 
